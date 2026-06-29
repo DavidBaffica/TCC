@@ -8,7 +8,22 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/home'); 
+
+
+    const usuariosCadastrados = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+
+    const usuarioValido = usuariosCadastrados.find(
+      (usuario) => usuario.email === email && usuario.senha === senha
+    );
+
+    if (usuarioValido) {
+
+      navigate('/home');
+    } else {
+
+      alert('E-mail ou senha incorretos!');
+    }
   };
 
   return (
@@ -18,23 +33,23 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>E-mail</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               className="form-input"
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
               placeholder="seu@email.com"
             />
           </div>
           <div className="form-group">
             <label>Senha</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               className="form-input"
-              value={senha} 
-              onChange={(e) => setSenha(e.target.value)} 
-              required 
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
               placeholder="Digite sua senha"
             />
           </div>
