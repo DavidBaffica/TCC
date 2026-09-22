@@ -1,0 +1,13 @@
+.profileCard {
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+}
+.avatarPlaceholder {
+  width: 100px;
+  height: 100px;
+  background-color: #334155;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

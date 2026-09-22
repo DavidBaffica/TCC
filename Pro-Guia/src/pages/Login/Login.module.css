@@ -1,0 +1,10 @@
+.loginWrapper {
+  min-height: calc(100vh - 70px);
+  background-color: #f1f5f9;
+}
+.loginCard {
+  width: 100%;
+  max-width: 400px;
+  border: none;
+  border-radius: 12px;
+}

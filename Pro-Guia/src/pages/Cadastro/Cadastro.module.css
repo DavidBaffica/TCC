@@ -1,0 +1,20 @@
+.cadastroWrapper {
+  min-height: calc(100vh - 70px);
+  background-color: #f1f5f9;
+}
+.cadastroCard {
+  width: 100%;
+  max-width: 500px;
+  border: none;
+  border-radius: 12px;
+}
+.lgpdBox {
+  background-color: #f8fafc;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+.lgpdBox input {
+  margin-left: 0;
+  margin-right: 10px;
+}

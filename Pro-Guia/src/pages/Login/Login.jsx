@@ -1,65 +1,50 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Menu from "../../components/Menu/Menu";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
+    const usuariosSalvos = JSON.parse(localStorage.getItem("proguia_usuarios")) || [];
+    
+    // Procura um usuário que tenha o mesmo email e senha digitados
+    const usuarioEncontrado = usuariosSalvos.find(user => user.email === email && user.senha === senha);
 
-
-    const usuariosCadastrados = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-
-    const usuarioValido = usuariosCadastrados.find(
-      (usuario) => usuario.email === email && usuario.senha === senha
-    );
-
-    if (usuarioValido) {
-
-      navigate('/home');
+    if (usuarioEncontrado) {
+      localStorage.setItem("proguia_logado", usuarioEncontrado.email);
+      navigate("/perfil");
     } else {
-
-      alert('E-mail ou senha incorretos!');
+      alert("E-mail ou senha incorretos. Tente novamente.");
     }
   };
 
   return (
-    <div className="app-container">
-      <div className="base-card">
-        <h2>Entrar</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>E-mail</label>
-            <input
-              type="email"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="seu@email.com"
-            />
+    <>
+      <Menu />
+      <div className="d-flex align-items-center justify-content-center py-5" style={{ minHeight: "80vh" }}>
+        <div className="card p-5 shadow" style={{ maxWidth: "400px", width: "100%" }}>
+          <div className="text-center mb-4">
+            <h2 className="fw-bold text-primary">Acessar PROGUIA</h2>
           </div>
-          <div className="form-group">
-            <label>Senha</label>
-            <input
-              type="password"
-              className="form-input"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              required
-              placeholder="Digite sua senha"
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">Entrar</button>
-        </form>
-        <p className="footer-text">
-          Não tem uma conta? <Link to="/cadastro">Cadastre-se aqui</Link>
-        </p>
+          <form onSubmit={handleLogin}>
+            <input type="email" className="form-control mb-3" placeholder="Digite seu e-mail" required 
+              onChange={(e) => setEmail(e.target.value)} />
+              
+            <input type="password" className="form-control mb-4" placeholder="Digite sua senha" required 
+              onChange={(e) => setSenha(e.target.value)} />
+              
+            <button type="submit" className="btn btn-primary w-100 fw-bold mb-3">Entrar</button>
+            <p className="text-center text-muted small">
+              Ainda não tem conta? <Link to="/cadastro" className="fw-bold">Cadastre-se</Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

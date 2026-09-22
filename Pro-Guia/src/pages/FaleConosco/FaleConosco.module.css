@@ -1,0 +1,8 @@
+.pageContainer {
+  min-height: 80vh;
+}
+.contactCard {
+  border: none;
+  border-top: 5px solid #2563eb;
+  background-color: #f8fafc;
+}

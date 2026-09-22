@@ -1,0 +1,7 @@
+.pageContainer { min-height: 80vh; }
+.cursoCard {
+  border-left: 5px solid #2563eb;
+  background-color: #f8fafc;
+  transition: 0.3s;
+}
+.cursoCard:hover { background-color: #f1f5f9; }

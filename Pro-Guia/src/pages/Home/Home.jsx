@@ -1,61 +1,125 @@
-import React from 'react';
-import Navbar from '../../componentes/Navbar';
+import Menu from "../../components/Menu/Menu";
+import { Link } from "react-router-dom";
+import styles from "./Home.module.css";
 
 const Home = () => {
   return (
-    <div>
-      <Navbar />
-      
-      <div className="page-container">
-       
-        <div className="base-card large">
+    <>
+      <Menu />
+
+      {/* 1. Hero com Imagem Estática de Fundo */}
+      <section className={styles.heroSection}>
+        <div className="container text-center text-white py-5">
+          <h1 className="display-4 fw-bold">O Futuro Começa nas Suas Escolhas</h1>
+          <p className="lead">Descubra sua vocação, aprenda a fazer um currículo profissional e encontre os melhores cursos.</p>
+        </div>
+      </section>
+
+      <div className="container mt-5">
+
+        {/* 2. Carrossel de Destaques Funcional */}
+        <div id="homeCarousel" className="carousel slide mb-5 shadow rounded overflow-hidden" data-bs-ride="carousel" data-bs-interval="4000">
           
-          <div className="home-header">
-            <h1>Bem-vindo ao ProGuia</h1>
-            <p className="footer-text">
-              O seu portal de orientação para o futuro profissional.
-            </p>
+          {/* Indicadores do Carrossel */}
+          <div className="carousel-indicators">
+            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
           </div>
 
-          <div className="articles-section">
-            
-            <article>
-              <h2>O Mercado de Trabalho Atual: Tecnologia em Foco</h2>
-              <img 
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-                alt="Equipe trabalhando com tecnologia" 
+          {/* Imagens do Carrossel */}
+          <div className="carousel-inner">
+            <div className="carousel-item active">
+              <img
+                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80"
+                className="d-block w-100"
+                alt="Tecnologia"
+                style={{ height: "380px", objectFit: "cover" }}
               />
-              <p>
-                Hoje em dia, a tecnologia permeia quase todas as áreas de atuação. Não importa se você é de exatas, humanas ou biológicas: a fluência digital tornou-se um requisito básico. A inteligência artificial, automação e a análise de dados estão transformando a maneira como trabalhamos, exigindo profissionais cada vez mais adaptáveis.
-              </p>
-            </article>
+              <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-60 rounded p-3">
+                <h5 className="fw-bold">Área de Tecnologia em Alta</h5>
+                <p>Mais de 500 mil vagas abertas para desenvolvedores e especialistas em TI.</p>
+              </div>
+            </div>
 
-            <article>
-              <h2>A Ascensão das Soft Skills</h2>
-              <img 
-                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80" 
-                alt="Reunião de negócios e comunicação" 
+            <div className="carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80"
+                className="d-block w-100"
+                alt="Estudos e Qualificação"
+                style={{ height: "380px", objectFit: "cover" }}
               />
-              <p>
-                Enquanto as habilidades técnicas (Hard Skills) conseguem a entrevista para você, são as habilidades comportamentais (Soft Skills) que garantem a vaga e a promoção. Inteligência emocional, capacidade de resolver problemas, comunicação clara e trabalho em equipe são hoje mais valorizados pelas empresas do que nunca.
-              </p>
-            </article>
+              <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-60 rounded p-3">
+                <h5 className="fw-bold">Cursos Gratuitos e Recomendados</h5>
+                <p>Aprenda novas habilidades sem pagar nada e impulsione seu currículo.</p>
+              </div>
+            </div>
 
-            <article>
-              <h2>Aprendizado Contínuo (Lifelong Learning)</h2>
-              <img 
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" 
-                alt="Pessoa estudando online no notebook" 
+            <div className="carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80"
+                className="d-block w-100"
+                alt="Mercado de Trabalho"
+                style={{ height: "380px", objectFit: "cover" }}
               />
-              <p>
-                A ideia de estudar apenas até terminar a faculdade ficou no passado. O mercado exige agora o conceito de "Lifelong Learning", ou seja, o aprendizado contínuo ao longo da vida. Estar disposto a se reinventar, fazer novos cursos rápidos e acompanhar as tendências da sua área é o que manterá seu currículo sempre relevante e atrativo para os recrutadores.
-              </p>
-            </article>
+              <div className="carousel-caption d-none d-md-block bg-dark bg-opacity-60 rounded p-3">
+                <h5 className="fw-bold">Primeiro Emprego e Jovem Aprendiz</h5>
+                <p>Dicas de entrevistas e como estruturar suas experiências acadêmicas.</p>
+              </div>
+            </div>
+          </div>
 
+          {/* Botões de Avançar / Voltar */}
+          <button className="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Anterior</span>
+          </button>
+          <button className="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="visually-hidden">Próximo</span>
+          </button>
+        </div>
+
+        {/* 3. Acesso Rápido */}
+        <div className="row text-center mb-5">
+          <div className="col-md-4 mb-3">
+            <Link to="/cursos" className={`btn btn-primary w-100 py-4 fw-bold fs-5 ${styles.quickBtn}`}>
+              🎓 Explorar Cursos
+            </Link>
+          </div>
+          <div className="col-md-4 mb-3">
+            <Link to="/curriculo" className={`btn btn-success w-100 py-4 fw-bold fs-5 ${styles.quickBtn}`}>
+              📄 Como Fazer Currículo
+            </Link>
+          </div>
+          <div className="col-md-4 mb-3">
+            <Link to="/contato" className={`btn btn-warning w-100 py-4 fw-bold fs-5 text-dark ${styles.quickBtn}`}>
+              💬 Fale Conosco
+            </Link>
           </div>
         </div>
+
+        {/* 4. Informações Interessantes */}
+        <section className="mb-5 bg-light p-5 rounded shadow-sm">
+          <h2 className="fw-bold text-center mb-4">Você Sabia?</h2>
+          <div className="row">
+            <div className="col-md-4 text-center mb-3">
+              <h1 className="text-primary fw-bold">70%</h1>
+              <p className="text-muted">Dos jovens têm dúvidas sobre qual carreira escolher após terminar os estudos.</p>
+            </div>
+            <div className="col-md-4 text-center mb-3">
+              <h1 className="text-success fw-bold">6 Segundos</h1>
+              <p className="text-muted">É a média de tempo que um recrutador leva para a primeira análise de um currículo.</p>
+            </div>
+            <div className="col-md-4 text-center mb-3">
+              <h1 className="text-warning fw-bold">+2.5 Mi</h1>
+              <p className="text-muted">De oportunidades na área de tecnologia e inovação previstas nos próximos anos.</p>
+            </div>
+          </div>
+        </section>
+
       </div>
-    </div>
+    </>
   );
 };
 

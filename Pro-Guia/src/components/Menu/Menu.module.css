@@ -1,0 +1,15 @@
+.navModern {
+  background-color: #0f172a; /* Tom técnico escuro */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.avatarIcon {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  transition: transform 0.2s ease-in-out;
+}
+
+.avatarIcon:hover {
+  transform: scale(1.08);
+}
