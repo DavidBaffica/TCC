@@ -7,6 +7,9 @@ import FaleConosco from "../pages/FaleConosco/FaleConosco";
 import Perfil from "../pages/Perfil/Perfil";
 import Login from "../pages/Login/Login";
 import Cadastro from "../pages/Cadastro/Cadastro";
+import DetalhesTecnologia from "../pages/DetalhesTecnologia/DetalhesTecnologia";
+
+
 
 function AppRoutes() {
   return (
@@ -20,6 +23,8 @@ function AppRoutes() {
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/cursos/tecnologia" element={<DetalhesTecnologia />} />
+        
       </Routes>
     </BrowserRouter>
   );

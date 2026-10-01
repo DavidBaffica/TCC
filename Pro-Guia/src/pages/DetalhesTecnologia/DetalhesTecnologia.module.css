@@ -1,0 +1,11 @@
+.paginaContainer {
+  min-height: 80vh;
+}
+
+.cardEmpresas {
+  background-color: #f8fafc;
+}
+
+.cardCursos {
+  background-color: #ffffff;
+}

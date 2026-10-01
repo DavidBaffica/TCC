@@ -31,7 +31,7 @@ const Cadastro = () => {
     localStorage.setItem("proguia_logado", formData.email);
     
     alert("Conta criada com sucesso! Você foi logado automaticamente.");
-    navigate("/perfil");
+    navigate("/");
   };
 
   return (

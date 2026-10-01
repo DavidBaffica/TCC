@@ -16,7 +16,7 @@ const Login = () => {
 
     if (usuarioEncontrado) {
       localStorage.setItem("proguia_logado", usuarioEncontrado.email);
-      navigate("/perfil");
+      navigate("/");
     } else {
       alert("E-mail ou senha incorretos. Tente novamente.");
     }
