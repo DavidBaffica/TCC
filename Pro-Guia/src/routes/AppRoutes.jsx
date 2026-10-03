@@ -8,7 +8,8 @@ import Perfil from "../pages/Perfil/Perfil";
 import Login from "../pages/Login/Login";
 import Cadastro from "../pages/Cadastro/Cadastro";
 import DetalhesTecnologia from "../pages/DetalhesTecnologia/DetalhesTecnologia";
-
+import DetalhesDesign from "../pages/DetalhesDesign/DetalhesDesign";
+import DetalhesMarketing from "../pages/DetalhesMarketing/DetalhesMarketing";
 
 
 function AppRoutes() {
@@ -24,7 +25,8 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/cursos/tecnologia" element={<DetalhesTecnologia />} />
-        
+        <Route path="/cursos/design" element={<DetalhesDesign />} />
+        <Route path="/cursos/marketing" element={<DetalhesMarketing />} />
       </Routes>
     </BrowserRouter>
   );
