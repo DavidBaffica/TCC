@@ -93,7 +93,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="col-md-4 mb-3">
-            <Link to="/contato" className={`btn btn-warning w-100 py-4 fw-bold fs-5 text-dark ${styles.quickBtn}`}>
+            <Link to="/fale-conosco" className={`btn btn-warning w-100 py-4 fw-bold fs-5 text-dark ${styles.quickBtn}`}>
               💬 Fale Conosco
             </Link>
           </div>
