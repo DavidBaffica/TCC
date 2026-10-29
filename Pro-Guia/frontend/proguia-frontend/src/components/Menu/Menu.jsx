@@ -1,108 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import api from "../../services/api";
-
-const Menu = () => {
-  const [user, setUser] = useState(null);
-
-  const avatarPadrao = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
-  const exibirFoto = (foto) => {
-    if (!foto) return avatarPadrao;
-    if (foto.startsWith("data:")) return foto;
-
-    const tipo = foto.startsWith("iVBOR") ? "png"
-      : foto.startsWith("UklGR") ? "webp"
-        : foto.startsWith("R0lGOD") ? "gif"
-          : "jpeg";
-
-    return `data:image/${tipo};base64,${foto}`;
-  };
-
-  useEffect(() => {
-    api.get("/usuarios/me")
-      .then((response) => {
-        if (response.data?.id) {
-          setUser(response.data);
-        }
-      })
-      .catch(() => {
-        // Usuário não autenticado
-      });
-  }, []);
-
-  return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-      <div className="container">
-        {/* Link principal do PROGUIA (leva para a Home) */}
-        <Link className="navbar-brand fw-bold fs-3 text-primary" to="/Proguia">
-          PROGUIA
-        </Link>
-
-        {/* Botão para menu mobile */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Alternar navegação"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        {/* Links de navegação */}
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <Link className="nav-link fw-semibold" to="/">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link fw-semibold" to="/cursos">
-                Cursos
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link fw-semibold" to="/curriculo">
-                Como Fazer Currículo
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link fw-semibold" to="/fale-conosco">
-                Fale Conosco
-              </Link>
-            </li>
-          </ul>
-
-          {/* Área da Conta (Foto de Perfil ou Botões de Login/Cadastro) */}
-          <div className="d-flex align-items-center gap-2">
-            {user ? (
-              <Link to="/perfil" className="text-decoration-none">
-                <img
-                  src={exibirFoto(user.foto)}
-                  alt="Perfil"
-                  className="rounded-circle border border-2 border-primary"
-                  style={{ width: "42px", height: "42px", objectFit: "cover" }}
-                />
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" className="btn btn-outline-primary btn-sm fw-semibold">
-                  Login
-                </Link>
-                <Link to="/cadastro" className="btn btn-primary btn-sm fw-bold">
-                  Cadastre-se
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-export default Menu;
+import styles from "./Menu.module.css";
+export default function Menu(){
+ const [user,setUser]=useState(null),[open,setOpen]=useState(false);
+ useEffect(()=>{api.get("/usuarios/me").then(({data})=>{if(data?.id)setUser(data)}).catch(()=>setUser(null))},[]);
+ const foto=f=>!f?"https://cdn-icons-png.flaticon.com/512/149/149071.png":f.startsWith("data:")?f:`data:image/jpeg;base64,${f}`;
+ return <header className={styles.nav}><div className={styles.inner}>
+  <Link to="/" className={styles.brand}><span className={styles.mark}>P</span><span>pro<span>guia</span></span></Link>
+  <button className={styles.toggle} onClick={()=>setOpen(v=>!v)} aria-label="Abrir menu">{open?"×":"☰"}</button>
+  <nav className={`${styles.links} ${open?styles.linksOpen:""}`}>
+   <NavLink to="/" end className={({isActive})=>isActive?styles.current:undefined} onClick={()=>setOpen(false)}>Início</NavLink>
+   <NavLink to="/cursos" className={({isActive})=>isActive?styles.current:undefined} onClick={()=>setOpen(false)}>Explorar cursos</NavLink>
+   <NavLink to="/curriculo" onClick={()=>setOpen(false)}>Currículo</NavLink>
+   <NavLink to="/fale-conosco" onClick={()=>setOpen(false)}>Fale conosco</NavLink>
+  </nav>
+  <div className={styles.account}>{user?.nivelAcesso==="ADMIN"&&<Link className={styles.admin} to="/admin">Painel admin ↗</Link>}{user?<Link to="/perfil" title="Meu perfil"><img className={styles.profile} src={foto(user.foto)} alt="Perfil"/></Link>:<><Link className={styles.login} to="/login">Entrar</Link><Link className={styles.signup} to="/cadastro">Criar conta</Link></>}</div>
+ </div></header>
+}
