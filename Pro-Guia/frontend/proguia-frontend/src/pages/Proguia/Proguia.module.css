@@ -1,4 +1,1 @@
-.heroSection {
-  background-color: #f1f5f9;
-  border-left: 8px solid #2563eb;
-}
+.page{max-width:1080px;margin:auto;padding:70px 24px 90px}.eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:900;color:#586ee9}.title{max-width:850px;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-2.5px;color:#172440;margin:18px 0}.intro{font-size:15px;line-height:1.9;color:#7a879e;max-width:760px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-top:42px}.card{padding:25px;background:#fff;border:1px solid #e8edf5;border-radius:17px}.card span{width:42px;height:42px;display:grid;place-items:center;background:#edf0ff;color:#5267ec;border-radius:13px;font-size:20px}.card h2{font-size:16px;color:#172440;margin:17px 0 8px}.card p{font-size:12px;color:#7a879e;line-height:1.8}@media(max-width:700px){.page{padding:42px 17px 65px}.grid{grid-template-columns:1fr}.title{letter-spacing:-1.6px}}
