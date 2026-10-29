@@ -39,6 +39,13 @@ public class Mensagem {
     @Column(name = "statusMensagem")
     private String statusMensagem;
 
+    @Column(name = "respostaAdmin", length = 4000)
+    private String respostaAdmin;
+
+    @Column(name = "dataResposta")
+    private LocalDateTime dataResposta;
+
+
     public long getId() {
         return id;
     }
@@ -94,6 +101,11 @@ public class Mensagem {
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
+
+    public String getRespostaAdmin() { return respostaAdmin; }
+    public void setRespostaAdmin(String respostaAdmin) { this.respostaAdmin = respostaAdmin; }
+    public LocalDateTime getDataResposta() { return dataResposta; }
+    public void setDataResposta(LocalDateTime dataResposta) { this.dataResposta = dataResposta; }
 
     public String getStatusMensagem() {
         return statusMensagem;
