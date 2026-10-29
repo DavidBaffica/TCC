@@ -1,0 +1,14 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import api from "../../services/api";
+import styles from "./Admin.module.css";
+export default function AdminHome(){
+ const [mensagens,setMensagens]=useState([]); const [cursos,setCursos]=useState([]); const [erro,setErro]=useState("");
+ useEffect(()=>{Promise.all([api.get("/mensagens/admin"),api.get("/cursos/admin")]).then(([m,c])=>{setMensagens(m.data||[]);setCursos(c.data||[])}).catch(()=>setErro("Não foi possível carregar os dados. Confirme se o backend atualizado está em execução e se você entrou como ADMIN."));},[]);
+ const novas=mensagens.filter(m=>m.statusMensagem==="ATIVO"&&!m.respostaAdmin).length;
+ return <><div className={styles.headingRow}><div><span className={styles.eyebrow}>SEU CENTRO DE CONTROLE</span><h1 className={styles.pageTitle}>Bom dia, admin. ✦</h1><p className={styles.pageSub}>Aqui está o que está acontecendo no Pro Guia hoje.</p></div><Link className={styles.primaryButton} to="/admin/cursos">＋ Novo curso</Link></div>
+ {erro&&<div className={styles.notice}>{erro}</div>}
+ <div className={styles.stats}><div className={styles.stat}><div className={styles.statTop}>Mensagens recebidas <span className={styles.statIcon}>✉</span></div><div className={styles.statValue}>{mensagens.length}</div><div className={styles.statHint}>Todas as mensagens do Fale Conosco</div></div><div className={styles.stat}><div className={styles.statTop}>Aguardando resposta <span className={styles.statIcon}>◷</span></div><div className={styles.statValue}>{novas}</div><div className={styles.statHint}>Mensagens que precisam da sua atenção</div></div><div className={styles.stat}><div className={styles.statTop}>Cursos publicados <span className={styles.statIcon}>▤</span></div><div className={styles.statValue}>{cursos.filter(c=>c.status==="ATIVO").length}</div><div className={styles.statHint}>Conteúdos disponíveis para visitantes</div></div></div>
+ <section className={styles.panel}><div className={styles.panelHeader}><h2 className={styles.panelTitle}>Mensagens recentes</h2><Link className={styles.textLink} to="/admin/mensagens">Ver todas ↗</Link></div><div className={styles.tableWrap}><table className={styles.table}><thead><tr><th>Remetente</th><th>Assunto / mensagem</th><th>Data</th><th>Status</th></tr></thead><tbody>{mensagens.slice().reverse().slice(0,5).map(m=><tr key={m.id}><td><strong>{m.emissor}</strong><br/>{m.email}</td><td>{(m.texto||"").slice(0,55)}{(m.texto||"").length>55?"…":""}</td><td>{m.dataMensagem?new Date(m.dataMensagem).toLocaleDateString("pt-BR"):"—"}</td><td><span className={m.respostaAdmin?styles.badge:styles.badgeUnread}>{m.respostaAdmin?"Respondida":"Pendente"}</span></td></tr>)}</tbody></table>{mensagens.length===0&&<div className={styles.empty}>Ainda não chegaram mensagens.</div>}</div></section>
+ </>;
+}
