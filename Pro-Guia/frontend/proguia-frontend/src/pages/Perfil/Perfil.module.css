@@ -1,13 +1,1 @@
-.profileCard {
-  border: 1px solid #e2e8f0;
-  background-color: #ffffff;
-}
-.avatarPlaceholder {
-  width: 100px;
-  height: 100px;
-  background-color: #334155;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.page{max-width:1000px;margin:0 auto;padding:55px 24px 80px}.heading{margin-bottom:28px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:1.7px;color:#586ee9}.title{font-size:38px;letter-spacing:-1.5px;margin:10px 0;color:#172440}.grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px}.card{background:#fff;border:1px solid #e8edf5;border-radius:18px;padding:25px}.center{text-align:center}.avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid #e5eaff}.name{font-size:19px;margin:15px 0 5px}.muted{font-size:12px;color:#7a879e;line-height:1.7}.form{display:grid;gap:16px}.group{display:grid;gap:8px}.group label{font-size:11px;font-weight:800;color:#4d5c76}.field{width:100%;border:1px solid #dfe5ef;border-radius:10px;padding:13px;font:inherit;font-size:12px}.button{border:0;border-radius:10px;background:#5267ec;color:white;padding:13px;font-weight:800;font-size:12px;cursor:pointer}.danger{background:#fff0f1;color:#bd3b4b}.actions{display:flex;gap:10px;flex-wrap:wrap}@media(max-width:700px){.grid{grid-template-columns:1fr}.page{padding:35px 16px}}
