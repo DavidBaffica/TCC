@@ -1,64 +1,8 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import {useState} from "react";
+import {Link,useNavigate} from "react-router-dom";
 import Menu from "../../components/Menu/Menu";
-import api from '../../services/api';
-
-
-const Cadastro = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ nome: '', telefone: '', email: '', senha: '' });
-
-const handleCadastro = async (e) => {
-    e.preventDefault();
-    try {
-      const dadosUsuario = {
-        nome: formData.nome.trim(),
-        telefone: formData.telefone.trim(),
-        username: formData.email.trim().toLowerCase(),
-        password: formData.senha
-      };
-      await api.post('/usuarios/create', dadosUsuario);
-
-      alert("Conta criada com sucesso!");
-      navigate('/login');
-    } catch (error) {
-      console.error("Erro ao cadastrar:", error.response?.status, error.response?.data || error.message);
-      if (error.response?.status === 409) {
-        alert("Este e-mail já está cadastrado.");
-      } else {
-        alert("Não foi possível criar a conta. Verifique os dados e se a API está funcionando.");
-      }
-    }
-  };
-
-  return (
-    <>
-      <Menu />
-      <div className="d-flex align-items-center justify-content-center py-5" style={{ minHeight: "80vh" }}>
-        <div className="card p-5 shadow" style={{ maxWidth: "500px", width: "100%" }}>
-          <h2 className="fw-bold text-primary text-center mb-4">Crie sua Conta</h2>
-          <form onSubmit={handleCadastro}>
-            <input type="text" className="form-control mb-3" placeholder="Nome Completo" required 
-              onChange={(e) => setFormData({...formData, nome: e.target.value})} />
-              
-            <input type="tel" className="form-control mb-3" placeholder="Telefone / WhatsApp" required 
-              onChange={(e) => setFormData({...formData, telefone: e.target.value})} />
-              
-            <input type="email" className="form-control mb-3" placeholder="E-mail" required 
-              onChange={(e) => setFormData({...formData, email: e.target.value})} />
-              
-            <input type="password" className="form-control mb-4" placeholder="Senha" required 
-              onChange={(e) => setFormData({...formData, senha: e.target.value})} />
-              
-            <button type="submit" className="btn btn-success w-100 fw-bold mb-3">Concluir e Entrar</button>
-          </form>
-          <p className="text-center text-muted small">
-            Já possui conta? <Link to="/login">Faça login</Link>
-          </p>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Cadastro;
+import api from "../../services/api";
+import styles from "./Cadastro.module.css";
+export default function Cadastro(){const [form,setForm]=useState({nome:"",email:"",telefone:"",senha:""}),[erro,setErro]=useState(""),[loading,setLoading]=useState(false);const navigate=useNavigate();
+ const submit=async e=>{e.preventDefault();setErro("");setLoading(true);try{await api.post("/usuarios/create",{nome:form.nome,username:form.email.trim().toLowerCase(),telefone:form.telefone,password:form.senha});navigate("/login")}catch(err){setErro(err.response?.data?.message||"Não foi possível criar a conta. Verifique os dados e tente novamente.")}finally{setLoading(false)}};
+ return <><Menu/><main className={styles.page}><section className={styles.card}><span className={styles.eyebrow}>SEU FUTURO, SEU CAMINHO</span><h1 className={styles.title}>Crie sua conta.</h1><p className={styles.subtitle}>Dê o primeiro passo para explorar novas oportunidades com o Pro Guia.</p><form className={styles.form} onSubmit={submit}><div className={styles.group}><label htmlFor="nome">Nome completo</label><input id="nome" className={styles.field} value={form.nome} onChange={e=>setForm({...form,nome:e.target.value})} required maxLength={100}/></div><div className={styles.group}><label htmlFor="email">E-mail</label><input id="email" className={styles.field} type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required/></div><div className={styles.group}><label htmlFor="telefone">Telefone (opcional)</label><input id="telefone" className={styles.field} value={form.telefone} onChange={e=>setForm({...form,telefone:e.target.value})}/></div><div className={styles.group}><label htmlFor="senha">Senha</label><input id="senha" className={styles.field} type="password" minLength={6} value={form.senha} onChange={e=>setForm({...form,senha:e.target.value})} required/></div><button className={styles.submit} disabled={loading}>{loading?"Criando conta…":"Criar minha conta ↗"}</button>{erro&&<p className={styles.error}>{erro}</p>}</form><p className={styles.footer}>Já tem uma conta? <Link to="/login">Entrar</Link></p></section></main></>}

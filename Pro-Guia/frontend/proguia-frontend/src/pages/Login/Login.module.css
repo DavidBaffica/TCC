@@ -1,10 +1,1 @@
-.loginWrapper {
-  min-height: calc(100vh - 70px);
-  background-color: #f1f5f9;
-}
-.loginCard {
-  width: 100%;
-  max-width: 400px;
-  border: none;
-  border-radius: 12px;
-}
+.page{min-height:calc(100vh - 78px);display:grid;grid-template-columns:1fr 1fr;background:#f5f7fc}.visual{background:radial-gradient(ellipse at 80% 15%,#617bff66,transparent 35%),linear-gradient(145deg,#101a31,#293e7c 75%,#5267ec);padding:60px;display:flex;flex-direction:column;justify-content:center;color:white}.visual h1{font-size:clamp(34px,4vw,54px);letter-spacing:-2px;line-height:1.08;margin:20px 0}.visual p{font-size:13px;line-height:1.9;color:#d1dbf6;max-width:420px}.visualBadge{font-size:10px;letter-spacing:1.6px;color:#c5d0ff;font-weight:900}.formSide{display:grid;place-items:center;padding:38px 22px}.card{width:min(420px,100%);background:#fff;border:1px solid #e7ebf4;border-radius:20px;padding:36px;box-shadow:0 18px 55px #1a2b4c0a}.title{font-size:26px;letter-spacing:-1px;margin:0 0 8px;color:#172440}.subtitle{font-size:12px;line-height:1.7;color:#7a879e;margin:0 0 26px}.form{display:grid;gap:17px}.group{display:grid;gap:8px}.group label{font-size:11px;font-weight:800;color:#4d5c76}.field{width:100%;border:1px solid #dfe5ef;border-radius:10px;padding:14px;font:inherit;font-size:12px;outline:none}.field:focus{border-color:#7182fa;box-shadow:0 0 0 3px #5267ec16}.submit{border:0;border-radius:11px;background:#5267ec;color:#fff;padding:14px;font-weight:850;font-size:12px;cursor:pointer}.footer{font-size:11px;text-align:center;color:#7a879e;margin-top:20px}.footer a{color:#5267ec;font-weight:850;text-decoration:none}.error{color:#bd3b4b;font-size:12px}@media(max-width:760px){.page{grid-template-columns:1fr}.visual{display:none}.formSide{min-height:calc(100vh - 68px)}.card{padding:27px}}

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Cursos from "../pages/Cursos/Cursos";
 import Curriculo from "../pages/Curriculo/Curriculo";
@@ -10,26 +10,5 @@ import Cadastro from "../pages/Cadastro/Cadastro";
 import DetalhesTecnologia from "../pages/DetalhesTecnologia/DetalhesTecnologia";
 import DetalhesDesign from "../pages/DetalhesDesign/DetalhesDesign";
 import DetalhesMarketing from "../pages/DetalhesMarketing/DetalhesMarketing";
-
-
-function AppRoutes() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cursos" element={<Cursos />} />
-        <Route path="/curriculo" element={<Curriculo />} />
-        <Route path="/proguia" element={<Proguia />} />
-        <Route path="/fale-conosco" element={<FaleConosco />} />
-        <Route path="/perfil" element={<Perfil />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/cursos/tecnologia" element={<DetalhesTecnologia />} />
-        <Route path="/cursos/design" element={<DetalhesDesign />} />
-        <Route path="/cursos/marketing" element={<DetalhesMarketing />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
-export default AppRoutes;
+import AdminRoutes from "../pages/Admin/AdminRoutes";
+export default function AppRoutes(){return <BrowserRouter><Routes><Route path="/" element={<Home/>}/><Route path="/cursos" element={<Cursos/>}/><Route path="/curriculo" element={<Curriculo/>}/><Route path="/proguia" element={<Proguia/>}/><Route path="/fale-conosco" element={<FaleConosco/>}/><Route path="/perfil" element={<Perfil/>}/><Route path="/login" element={<Login/>}/><Route path="/cadastro" element={<Cadastro/>}/><Route path="/cursos/tecnologia" element={<DetalhesTecnologia/>}/><Route path="/cursos/design" element={<DetalhesDesign/>}/><Route path="/cursos/marketing" element={<DetalhesMarketing/>}/><Route path="/admin/*" element={<AdminRoutes/>}/></Routes></BrowserRouter>}

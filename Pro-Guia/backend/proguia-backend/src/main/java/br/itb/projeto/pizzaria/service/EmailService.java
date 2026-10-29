@@ -13,6 +13,14 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
+    public void enviarResposta(String destino, String textoOriginal, String resposta) {
+        SimpleMailMessage mensagem = new SimpleMailMessage();
+        mensagem.setTo(destino);
+        mensagem.setSubject("Resposta do Pro Guia - Fale Conosco");
+        mensagem.setText("Olá!\n\nRecebemos sua mensagem:\n\"" + textoOriginal + "\"\n\nNossa equipe respondeu:\n" + resposta + "\n\nAtenciosamente,\nEquipe Pro Guia");
+        mailSender.send(mensagem);
+    }
+
     public void enviarCodigo(String destino, String codigo) {
         SimpleMailMessage mensagem = new SimpleMailMessage();
         mensagem.setTo(destino);

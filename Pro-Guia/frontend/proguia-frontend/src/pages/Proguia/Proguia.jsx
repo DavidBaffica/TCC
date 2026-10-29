@@ -1,27 +1,3 @@
 import Menu from "../../components/Menu/Menu";
 import styles from "./Proguia.module.css";
-
-const Proguia = () => {
-  return (
-    <>
-      <Menu />
-      <div className="container mt-5">
-        <div className={`p-5 rounded ${styles.heroSection}`}>
-          <h1 className="fw-bold text-primary">Sobre o PROGUIA</h1>
-          <p className="lead mt-3">
-            A escolha profissional é um momento decisivo. O Proguia é uma plataforma digital desenvolvida para ajudar jovens de 14 a 17 anos a ingressarem no mercado de trabalho com segurança, autoconhecimento e preparação.
-          </p>
-          <hr />
-          <h4>Nossos Objetivos:</h4>
-          <ul>
-            <li>Orientação através de testes vocacionais;</li>
-            <li>Criação de currículos estruturados;</li>
-            <li>Trilhas de capacitação para diversas áreas.</li>
-          </ul>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Proguia;
+export default function Proguia(){return <><Menu/><main className={styles.page}><span className={styles.eyebrow}>SOBRE O PROGUIA</span><h1 className={styles.title}>Acreditamos no potencial de cada começo.</h1><p className={styles.intro}>O Pro Guia é uma plataforma digital criada para apoiar jovens na descoberta de caminhos profissionais, no desenvolvimento de habilidades e na preparação para o mercado de trabalho.</p><div className={styles.grid}><article className={styles.card}><span>✦</span><h2>Orientação</h2><p>Informações para explorar interesses, áreas de atuação e possibilidades de carreira.</p></article><article className={styles.card}><span>▤</span><h2>Preparação</h2><p>Dicas práticas para montar um currículo, organizar competências e se apresentar melhor.</p></article><article className={styles.card}><span>↗</span><h2>Capacitação</h2><p>Trilhas e cursos para dar os primeiros passos no aprendizado contínuo.</p></article></div></main></>}
