@@ -1,56 +1,9 @@
-import Menu from "../../components/Menu/Menu";
+import { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
+import Menu from "../../components/Menu/Menu";
+import api from "../../services/api";
 import styles from "./Cursos.module.css";
-
-const Cursos = () => {
-  // Adicionei as áreas que criamos e a propriedade 'path' que guarda a rota de cada uma
-  const carreiras = [
-    { 
-      id: 1, 
-      area: "Tecnologia da Informação (TI)", 
-      desc: "Programação, desenvolvimento de sistemas, inteligência artificial e segurança de dados.",
-      path: "/cursos/tecnologia" // Rota para a página de TI
-    },
-    { 
-      id: 2, 
-      area: "Design e UI/UX", 
-      desc: "Criação de interfaces para aplicativos, sites, identidade visual e experiência do usuário.",
-      path: "/cursos/design" // Rota para a página de Design
-    },
-    { 
-      id: 3, 
-      area: "Marketing Digital e Negócios", 
-      desc: "Gestão de mídias sociais, tráfego pago, SEO, escrita persuasiva e vendas online.",
-      path: "/cursos/marketing" // Rota para a página de Marketing
-    }
-  ];
-
-  return (
-    <>
-      <Menu />
-      <div className={`container mt-5 ${styles.pageContainer}`}>
-        <h2 className="mb-4 fw-bold">Trilhas de Capacitação</h2>
-        <div className="row">
-          {carreiras.map(carreira => (
-            <div className="col-md-12 mb-4" key={carreira.id}>
-              <div className={`card ${styles.cursoCard}`}>
-                <div className="card-body d-flex justify-content-between align-items-center">
-                  <div>
-                    <h4 className="card-title text-primary">{carreira.area}</h4>
-                    <p className="card-text">{carreira.desc}</p>
-                  </div>
-                  {/* Aqui está a mágica: o 'to' puxa o 'path' correspondente de cada item */}
-                  <Link to={carreira.path} className="btn btn-primary">
-                    Saiba mais ➔
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Cursos;
+const iniciais=[{id:"area-ti",titulo:"Tecnologia da Informação",categoria:"Tecnologia",descricao:"Programação, desenvolvimento de sistemas, inteligência artificial e segurança de dados.",linkExterno:"/cursos/tecnologia"},{id:"area-design",titulo:"Design e UI/UX",categoria:"Design",descricao:"Criação de interfaces para aplicativos, sites, identidade visual e experiência do usuário.",linkExterno:"/cursos/design"},{id:"area-marketing",titulo:"Marketing Digital e Negócios",categoria:"Marketing",descricao:"Gestão de mídias sociais, tráfego pago, SEO, conteúdo e vendas online.",linkExterno:"/cursos/marketing"}];
+export default function Cursos(){const [cursos,setCursos]=useState(iniciais),[carregando,setCarregando]=useState(true);
+ useEffect(()=>{api.get("/cursos").then(({data})=>{if(Array.isArray(data)&&data.length)setCursos([...data,...iniciais])}).catch(()=>{}).finally(()=>setCarregando(false))},[]);
+ return <><Menu/><main className={styles.pageContainer}><div className={styles.header}><div><span className={styles.eyebrow}>APRENDA ALGO NOVO</span><h1 className={styles.title}>Encontre sua próxima habilidade.</h1><p className={styles.description}>Explore áreas profissionais, descubra novos caminhos e encontre conteúdos para dar o próximo passo na sua carreira.</p></div></div><div className={styles.courseGrid}>{cursos.map(c=><article className={styles.cursoCard} key={c.id}><div className={styles.courseVisual} style={c.imagemUrl?{backgroundImage:`linear-gradient(#101a3166,#101a3166),url("${c.imagemUrl}")`,backgroundSize:"cover",backgroundPosition:"center"}:{}}>{!c.imagemUrl&&(c.categoria==="Design"?"✳":c.categoria==="Marketing"?"↗":"⌘")}</div><div className={styles.courseBody}><span className={styles.category}>{c.categoria}</span><h3>{c.titulo||c.area}</h3><p>{c.descricao||c.desc}</p><a className={styles.courseLink} href={c.linkExterno||"/fale-conosco"} target={c.linkExterno?.startsWith("http")?"_blank":undefined} rel="noreferrer">Conhecer oportunidade ↗</a></div></article>)}{carregando&&<div className={styles.empty}>Carregando cursos…</div>}</div></main></>}
