@@ -13,10 +13,12 @@ public class MensagemService {
 
     private final MensagemRepository mensagemRepository;
     private final NotificacaoService notificacaoService;
+    private final EmailService emailService;
 
-    public MensagemService(MensagemRepository mensagemRepository, NotificacaoService notificacaoService) {
+    public MensagemService(MensagemRepository mensagemRepository, NotificacaoService notificacaoService, EmailService emailService) {
         this.mensagemRepository = mensagemRepository;
         this.notificacaoService = notificacaoService;
+        this.emailService = emailService;
     }
 
     public Mensagem enviarMensagem(Mensagem mensagem) {
@@ -37,7 +39,16 @@ public class MensagemService {
     }
 
     public Mensagem findById(Long id) {
-        return mensagemRepository.findById(id).orElse(null);
+        return mensagemRepository.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Mensagem não encontrada"));
+    }
+
+    public Mensagem responder(Long id, String resposta) {
+        if (resposta == null || resposta.isBlank()) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, "A resposta é obrigatória.");
+        Mensagem mensagem = mensagemRepository.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Mensagem não encontrada"));
+        try { emailService.enviarResposta(mensagem.getEmail(), mensagem.getTexto(), resposta.trim()); }
+        catch (Exception ex) { throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_GATEWAY, "Não foi possível enviar o e-mail. Confira MAIL_USERNAME e MAIL_PASSWORD."); }
+        mensagem.setRespostaAdmin(resposta.trim()); mensagem.setDataResposta(LocalDateTime.now()); mensagem.setStatusMensagem("RESPONDIDA"); mensagem.setDataAtualizacao(LocalDateTime.now());
+        return mensagemRepository.save(mensagem);
     }
 
     public Mensagem abrirMensagem(Long id) {
