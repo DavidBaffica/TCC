@@ -1,9 +1,1 @@
-.paginaContainer {
-  min-height: 80vh;
-}
-.cardEmpresas {
-  background-color: #f0fdf4;
-}
-.cardCursos {
-  background-color: #ffffff;
-}
+.page{max-width:1120px;margin:auto;padding:48px 24px 80px}.back{display:inline-flex;text-decoration:none;color:#5267ec;background:#edf0ff;border-radius:10px;padding:11px 14px;font-size:11px;font-weight:850}.eyebrow{display:block;margin-top:25px;font-size:10px;font-weight:900;letter-spacing:1.7px;color:#26966e}.title{font-size:clamp(32px,4vw,46px);letter-spacing:-1.8px;color:#172440;margin:12px 0}.intro{font-size:14px;line-height:1.9;color:#7a879e;max-width:850px;margin-bottom:32px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:#fff;border:1px solid #e8edf5;border-radius:18px;padding:25px}.card h2{font-size:17px;color:#172440;margin:0 0 18px}.list{list-style:none;padding:0;margin:0;display:grid;gap:10px}.list li{font-size:12px;color:#53617b;background:#f7f8fc;border-radius:10px;padding:12px}.hint{font-size:11px;line-height:1.8;color:#7a879e;margin-top:17px}.links{display:grid;gap:10px}.links a{display:block;border:1px solid #e3e8f4;border-radius:10px;padding:13px;text-decoration:none;font-size:12px;font-weight:750;color:#26966e;transition:.2s}.links a:hover{background:#f6f7ff;border-color:#bfc9ff;transform:translateX(2px)}@media(max-width:720px){.page{padding:34px 16px 60px}.grid{grid-template-columns:1fr}}
