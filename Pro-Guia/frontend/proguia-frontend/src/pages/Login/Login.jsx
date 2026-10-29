@@ -1,57 +1,8 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import Menu from '../../components/Menu/Menu';
-import api from '../../services/api';
-
-const Login = () => {
-  const [formData, setFormData] = useState({ email: '', senha: '' });
-  const navigate = useNavigate();
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const email = formData.email.trim().toLowerCase();
-      const response = await api.post('/usuarios/login', {
-        username: email,
-        password: formData.senha
-      });
-
-      localStorage.setItem("proguia_logado", email);
-      localStorage.setItem("proguia_id", String(response.data.id));
-      
-      alert("Login realizado com sucesso!");
-      navigate('/perfil');
-    } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      alert("E-mail ou senha incorretos.");
-    }
-  };
-
-
-  return (
-    <>
-      <Menu />
-      <div className="d-flex align-items-center justify-content-center py-5" style={{ minHeight: "80vh" }}>
-        <div className="card p-5 shadow" style={{ maxWidth: "400px", width: "100%" }}>
-          <div className="text-center mb-4">
-            <h2 className="fw-bold text-primary">Acessar PROGUIA</h2>
-          </div>
-          <form onSubmit={handleLogin}>
-            <input type="email" className="form-control mb-3" placeholder="Digite seu e-mail" required 
-              onChange={(e) => setFormData({...formData, email: e.target.value})} />
-              
-            <input type="password" className="form-control mb-4" placeholder="Digite sua senha" required 
-              onChange={(e) => setFormData({...formData, senha: e.target.value} )} />
-              
-            <button type="submit" className="btn btn-primary w-100 fw-bold mb-3">Entrar</button>
-            <p className="text-center text-muted small">
-              Ainda não tem conta? <Link to="/cadastro" className="fw-bold">Cadastre-se</Link>
-            </p>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default Login;
+import { useState } from "react";
+import { useNavigate,Link } from "react-router-dom";
+import Menu from "../../components/Menu/Menu";
+import api from "../../services/api";
+import styles from "./Login.module.css";
+export default function Login(){const [form,setForm]=useState({email:"",senha:""}),[erro,setErro]=useState(""),[loading,setLoading]=useState(false);const navigate=useNavigate();
+ const entrar=async e=>{e.preventDefault();setLoading(true);setErro("");try{const email=form.email.trim().toLowerCase();const {data}=await api.post("/usuarios/login",{username:email,password:form.senha});localStorage.setItem("proguia_logado",email);localStorage.setItem("proguia_id",String(data.id));navigate(data.nivelAcesso==="ADMIN"?"/admin":"/perfil")}catch{setErro("E-mail ou senha incorretos. Confira seus dados e tente novamente.")}finally{setLoading(false)}};
+ return <><Menu/><main className={styles.page}><section className={styles.visual}><span className={styles.visualBadge}>PROGUIA / SUA JORNADA</span><h1>O próximo capítulo começa com você.</h1><p>Acesse sua conta para continuar sua jornada, descobrir oportunidades e transformar planos em próximos passos.</p></section><section className={styles.formSide}><div className={styles.card}><h2 className={styles.title}>Que bom ter você aqui.</h2><p className={styles.subtitle}>Entre na sua conta para continuar.</p><form className={styles.form} onSubmit={entrar}><div className={styles.group}><label htmlFor="email">E-mail</label><input id="email" className={styles.field} type="email" autoComplete="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} required placeholder="voce@exemplo.com"/></div><div className={styles.group}><label htmlFor="senha">Senha</label><input id="senha" className={styles.field} type="password" autoComplete="current-password" value={form.senha} onChange={e=>setForm({...form,senha:e.target.value})} required placeholder="Sua senha"/></div><button className={styles.submit} disabled={loading}>{loading?"Entrando…":"Entrar na conta ↗"}</button>{erro&&<p className={styles.error} role="alert">{erro}</p>}</form><p className={styles.footer}>Ainda não tem conta? <Link to="/cadastro">Criar uma conta</Link></p></div></section></main></>}
