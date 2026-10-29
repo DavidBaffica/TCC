@@ -2,59 +2,36 @@ import { Link } from "react-router-dom";
 import Menu from "../../components/Menu/Menu";
 import styles from "./DetalhesMarketing.module.css";
 
-const DetalhesMarketing = () => {
+const empresas = ["Google Ads", "Meta (Instagram e Facebook)", "RD Station", "HubSpot", "Ambev — marketing de marca"];
+const cursos = [
+  { nome: "Google Skillshop — certificações", url: "https://skillshop.exceedlms.com/" },
+  { nome: "HubSpot Academy — inbound marketing", url: "https://academy.hubspot.com/" },
+  { nome: "Meta Blueprint — anúncios online", url: "https://www.facebook.com/business/learn" },
+];
+
+export default function DetalhesMarketing() {
   return (
     <>
       <Menu />
-      <div className={`container mt-5 mb-5 ${styles.paginaContainer}`}>
-        <Link to="/cursos" className="btn btn-outline-secondary mb-4">← Voltar para Cursos</Link>
-        
-        <h1 className="fw-bold text-success mb-3">Área de Marketing Digital</h1>
-        <p className="fs-5 text-muted mb-5">
-          O Marketing Digital conecta empresas aos clientes através de dados, conteúdo e campanhas de anúncios. É essencial para qualquer negócio moderno que deseja crescer na internet.
+      <main className={styles.page}>
+        <Link to="/cursos" className={styles.back}>← Voltar para cursos</Link>
+        <span className={styles.eyebrow}>TRILHA PROFISSIONAL / MARKETING</span>
+        <h1 className={styles.title}>Marketing digital e negócios</h1>
+        <p className={styles.intro}>
+          Marketing digital conecta empresas e pessoas por meio de conteúdo, dados, estratégia e campanhas. É uma área dinâmica para quem gosta de comunicação, análise e criatividade.
         </p>
-
-        <div className="row">
-          <div className="col-md-6 mb-4">
-            <div className={`card h-100 shadow-sm border-0 ${styles.cardEmpresas}`}>
-              <div className="card-body">
-                <h4 className="fw-bold mb-3">🏢 Empresas Referência</h4>
-                <ul className="list-group list-group-flush rounded">
-                  <li className="list-group-item bg-transparent">💼 Google Ads</li>
-                  <li className="list-group-item bg-transparent">💼 Meta (Instagram/Facebook)</li>
-                  <li className="list-group-item bg-transparent">💼 RD Station</li>
-                  <li className="list-group-item bg-transparent">💼 HubSpot</li>
-                  <li className="list-group-item bg-transparent">💼 Ambev (Marketing de Marca)</li>
-                </ul>
-                <small className="text-muted mt-3 d-block">
-                  Dica: Certificações gratuitas do Google e HubSpot abrem muitas portas de estágio!
-                </small>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-6 mb-4">
-            <div className={`card h-100 shadow-sm border-0 ${styles.cardCursos}`}>
-              <div className="card-body">
-                <h4 className="fw-bold mb-3">📚 Onde Estudar (Recomendados)</h4>
-                <div className="d-flex flex-column gap-2">
-                  <a href="https://skillshop.exceedlms.com/" target="_blank" rel="noreferrer" className="btn btn-outline-success text-start">
-                    Google Skillshop (Certificações Grátis) ↗
-                  </a>
-                  <a href="https://academy.hubspot.com/" target="_blank" rel="noreferrer" className="btn btn-outline-success text-start">
-                    HubSpot Academy - Inbound Marketing ↗
-                  </a>
-                  <a href="https://www.facebook.com/business/learn" target="_blank" rel="noreferrer" className="btn btn-outline-success text-start">
-                    Meta Blueprint - Anúncios Online ↗
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className={styles.grid}>
+          <section className={styles.card}>
+            <h2>🏢 Empresas para conhecer</h2>
+            <ul className={styles.list}>{empresas.map((empresa) => <li key={empresa}>↗ {empresa}</li>)}</ul>
+            <p className={styles.hint}>Dica: certificações e projetos próprios ajudam a demonstrar suas habilidades.</p>
+          </section>
+          <section className={styles.card}>
+            <h2>📚 Onde começar a estudar</h2>
+            <div className={styles.links}>{cursos.map((curso) => <a key={curso.url} href={curso.url} target="_blank" rel="noreferrer">{curso.nome} ↗</a>)}</div>
+          </section>
         </div>
-      </div>
+      </main>
     </>
   );
-};
-
-export default DetalhesMarketing;
+}
