@@ -1,11 +1,17 @@
-.paginaContainer {
-  min-height: 80vh;
-}
-
-.cardEmpresas {
-  background-color: #f8fafc;
-}
-
-.cardCursos {
-  background-color: #ffffff;
-}
+.page{max-width:1120px;min-height:75vh;margin:0 auto;padding:48px 24px 80px;color:#172440}
+.back{display:inline-flex;align-items:center;margin-bottom:28px;color:#5267ec;text-decoration:none;font-size:12px;font-weight:800}
+.back:hover{text-decoration:underline}
+.eyebrow{display:block;font-size:10px;letter-spacing:1.7px;font-weight:900;color:#586ee9}
+.title{font-size:clamp(32px,4.5vw,48px);line-height:1.08;letter-spacing:-1.8px;margin:12px 0 16px}
+.intro{max-width:800px;color:#73819a;font-size:14px;line-height:1.9;margin:0 0 32px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.card{min-width:0;background:#fff;border:1px solid #e5eaf4;border-radius:18px;padding:26px;box-shadow:0 12px 32px #17244008}
+.card h2{font-size:17px;letter-spacing:-.3px;margin:0 0 18px}
+.list{list-style:none;padding:0;margin:0}
+.list li{padding:12px 14px;border-bottom:1px solid #edf0f6;color:#4c5b76;font-size:12px}
+.list li:last-child{border-bottom:0}
+.hint{background:#eef2ff;color:#5264bd;border-radius:12px;padding:13px;font-size:11px;line-height:1.7;margin:18px 0 0}
+.links{display:grid;gap:10px}
+.links a{display:block;padding:14px 15px;border:1px solid #e1e7f2;border-radius:11px;color:#5267ec;text-decoration:none;font-size:12px;font-weight:750;line-height:1.6;transition:background .2s,border-color .2s}
+.links a:hover{background:#f3f5ff;border-color:#bdc7ff}
+@media(max-width:700px){.page{padding:35px 16px 60px}.grid{grid-template-columns:1fr}.card{padding:20px}.title{letter-spacing:-1.2px}}
