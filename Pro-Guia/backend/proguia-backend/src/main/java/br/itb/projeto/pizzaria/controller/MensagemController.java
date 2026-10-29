@@ -1,6 +1,7 @@
 package br.itb.projeto.pizzaria.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,16 @@ public class MensagemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mensagemEnviada);
     }
      
+    @GetMapping("/admin")
+    public ResponseEntity<List<Mensagem>> listarParaAdmin() {
+        return ResponseEntity.ok(mensagemService.findAll());
+    }
+
+    @PostMapping("/{id}/responder")
+    public ResponseEntity<Mensagem> responder(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(mensagemService.responder(id, body.get("resposta")));
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<Mensagem>> findAll() {
         return ResponseEntity.ok(mensagemService.findAll());
