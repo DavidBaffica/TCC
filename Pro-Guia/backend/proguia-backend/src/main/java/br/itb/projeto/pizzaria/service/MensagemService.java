@@ -1,9 +1,12 @@
+
 package br.itb.projeto.pizzaria.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.itb.projeto.pizzaria.model.entity.Mensagem;
 import br.itb.projeto.pizzaria.model.repository.MensagemRepository;
@@ -15,7 +18,11 @@ public class MensagemService {
     private final NotificacaoService notificacaoService;
     private final EmailService emailService;
 
-    public MensagemService(MensagemRepository mensagemRepository, NotificacaoService notificacaoService, EmailService emailService) {
+    public MensagemService(
+            MensagemRepository mensagemRepository,
+            NotificacaoService notificacaoService,
+            EmailService emailService) {
+
         this.mensagemRepository = mensagemRepository;
         this.notificacaoService = notificacaoService;
         this.emailService = emailService;
@@ -28,7 +35,7 @@ public class MensagemService {
 
         Mensagem mensagemEnviada = mensagemRepository.save(mensagem);
 
-        // ✅ NOTIFICA EM TEMPO REAL
+        // Notifica o painel administrativo sobre a nova mensagem
         notificacaoService.notificarNovaMensagem();
 
         return mensagemEnviada;
@@ -39,36 +46,68 @@ public class MensagemService {
     }
 
     public Mensagem findById(Long id) {
-        return mensagemRepository.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Mensagem não encontrada"));
+        return mensagemRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Mensagem não encontrada"
+                ));
     }
 
     public Mensagem responder(Long id, String resposta) {
-        if (resposta == null || resposta.isBlank()) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, "A resposta é obrigatória.");
-        Mensagem mensagem = mensagemRepository.findById(id).orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Mensagem não encontrada"));
-        try { emailService.enviarResposta(mensagem.getEmail(), mensagem.getTexto(), resposta.trim()); }
-        catch (Exception ex) { throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_GATEWAY, "Não foi possível enviar o e-mail. Confira MAIL_USERNAME e MAIL_PASSWORD."); }
-        mensagem.setRespostaAdmin(resposta.trim()); mensagem.setDataResposta(LocalDateTime.now()); mensagem.setStatusMensagem("RESPONDIDA"); mensagem.setDataAtualizacao(LocalDateTime.now());
+
+        if (resposta == null || resposta.isBlank()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "A resposta é obrigatória."
+            );
+        }
+
+        Mensagem mensagem = findById(id);
+
+        try {
+            emailService.enviarResposta(
+                    mensagem.getEmail(),
+                    mensagem.getTexto(),
+                    resposta.trim()
+            );
+
+        } catch (Exception ex) {
+
+            // Exibe o erro verdadeiro no terminal do backend
+            System.err.println("ERRO AO ENVIAR E-MAIL:");
+            ex.printStackTrace();
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_GATEWAY,
+                    "Falha ao enviar o e-mail. Consulte o terminal do backend."
+            );
+        }
+
+        mensagem.setRespostaAdmin(resposta.trim());
+        mensagem.setDataResposta(LocalDateTime.now());
+        mensagem.setStatusMensagem("RESPONDIDA");
+        mensagem.setDataAtualizacao(LocalDateTime.now());
+
         return mensagemRepository.save(mensagem);
     }
 
     public Mensagem abrirMensagem(Long id) {
-        Mensagem _mensagem = mensagemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Mensagem não encontrada"));
 
-        _mensagem.setStatusMensagem("LIDA");
-        _mensagem.setDataAtualizacao(LocalDateTime.now());
+        Mensagem mensagem = findById(id);
 
-        return mensagemRepository.save(_mensagem);
+        mensagem.setStatusMensagem("LIDA");
+        mensagem.setDataAtualizacao(LocalDateTime.now());
+
+        return mensagemRepository.save(mensagem);
     }
 
     public Mensagem inativar(Long id) {
-        Mensagem _mensagem = mensagemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Mensagem não encontrada"));
 
-        _mensagem.setStatusMensagem("INATIVA");
-        _mensagem.setDataAtualizacao(LocalDateTime.now());
+        Mensagem mensagem = findById(id);
 
-        return mensagemRepository.save(_mensagem);
+        mensagem.setStatusMensagem("INATIVA");
+        mensagem.setDataAtualizacao(LocalDateTime.now());
+
+        return mensagemRepository.save(mensagem);
     }
-
 }
