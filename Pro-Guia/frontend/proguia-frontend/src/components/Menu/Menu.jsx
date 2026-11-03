@@ -50,7 +50,9 @@ export default function Menu() {
           {open ? "×" : "☰"}
         </button>
 
-        <nav className={`${styles.links} ${open ? styles.linksOpen : ""}`}>
+        <nav
+          className={`${styles.links} ${open ? styles.linksOpen : ""}`}
+        >
           <NavLink
             to="/"
             end

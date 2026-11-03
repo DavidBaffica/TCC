@@ -21,7 +21,6 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-
         <Route path="/cursos" element={<Cursos />} />
         <Route path="/curriculo" element={<Curriculo />} />
         <Route path="/proguia" element={<Proguia />} />

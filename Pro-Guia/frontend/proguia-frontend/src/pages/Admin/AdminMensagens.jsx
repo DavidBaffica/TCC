@@ -13,14 +13,17 @@ export default function AdminMensagens() {
   const [ok, setOk] = useState("");
   const [enviando, setEnviando] = useState(false);
 
-  const carregar = () => {
-    return api.get("/mensagens/admin")
+  const carregar = () =>
+    api
+      .get("/mensagens/admin")
       .then(({ data }) => {
-        setItems(data || []);
-        setSelected((current) =>
-          current
-            ? data.find((x) => x.id === current.id) || null
-            : (data || [])[0] || null
+        const mensagens = data || [];
+
+        setItems(mensagens);
+        setSelected((atual) =>
+          atual
+            ? mensagens.find((mensagem) => mensagem.id === atual.id) || null
+            : mensagens[0] || null
         );
       })
       .catch(() => {
@@ -28,47 +31,53 @@ export default function AdminMensagens() {
           "Falha ao carregar mensagens. Confirme se o backend atualizado está ativo e seu usuário tem perfil ADMIN."
         );
       });
-  };
 
   useEffect(() => {
     carregar();
   }, []);
 
-  const filtradas = useMemo(() => {
-    return items.filter((m) => {
-      const q = busca.toLowerCase();
-      const texto = [m.emissor, m.email, m.texto]
-        .join(" ")
-        .toLowerCase();
+  const filtradas = useMemo(
+    () =>
+      items.filter((mensagem) => {
+        const termo = busca.toLowerCase();
 
-      return (
-        texto.includes(q) &&
-        (
+        const texto = [
+          mensagem.emissor,
+          mensagem.email,
+          mensagem.texto,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        const correspondeAoFiltro =
           filtro === "todas" ||
-          (filtro === "pendentes" && !m.respostaAdmin) ||
-          (filtro === "respondidas" && m.respostaAdmin)
-        )
-      );
-    });
-  }, [items, busca, filtro]);
+          (filtro === "pendentes" && !mensagem.respostaAdmin) ||
+          (filtro === "respondidas" && mensagem.respostaAdmin);
 
-  const abrir = async (m) => {
-    setSelected(m);
-    setResposta(m.respostaAdmin || "");
+        return texto.includes(termo) && correspondeAoFiltro;
+      }),
+    [items, busca, filtro]
+  );
+
+  const abrir = async (mensagem) => {
+    setSelected(mensagem);
+    setResposta(mensagem.respostaAdmin || "");
     setErro("");
     setOk("");
 
     try {
-      await api.put(`/mensagens/${m.id}/abrir`);
+      await api.put(`/mensagens/${mensagem.id}/abrir`);
     } catch {
-      // A mensagem continua selecionada mesmo se não for possível marcá-la como lida.
+      // A falha ao marcar como aberta não impede a leitura da mensagem.
     }
   };
 
-  const enviar = async (e) => {
-    e.preventDefault();
+  const enviar = async (evento) => {
+    evento.preventDefault();
 
-    if (!selected || !resposta.trim()) return;
+    if (!selected || !resposta.trim()) {
+      return;
+    }
 
     setEnviando(true);
     setErro("");
@@ -85,10 +94,10 @@ export default function AdminMensagens() {
       setResposta(data.respostaAdmin || resposta);
 
       await carregar();
-    } catch (err) {
+    } catch (erroEnvio) {
       setErro(
-        err.response?.data?.message ||
-        "Não foi possível enviar. Confira as configurações de e-mail do backend."
+        erroEnvio.response?.data?.message ||
+          "Não foi possível enviar. Confira as configurações de e-mail do backend."
       );
     } finally {
       setEnviando(false);
@@ -112,13 +121,13 @@ export default function AdminMensagens() {
           className={styles.search}
           placeholder="Buscar por nome, e-mail ou mensagem..."
           value={busca}
-          onChange={(e) => setBusca(e.target.value)}
+          onChange={(evento) => setBusca(evento.target.value)}
         />
 
         <select
           className={styles.select}
           value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
+          onChange={(evento) => setFiltro(evento.target.value)}
         >
           <option value="todas">Todas as mensagens</option>
           <option value="pendentes">Aguardando resposta</option>
@@ -130,18 +139,23 @@ export default function AdminMensagens() {
         <section className={styles.panel}>
           <div className={styles.panelHeader}>
             <h2 className={styles.panelTitle}>
-              Caixa de entrada ({filtradas.length})
+              Caixa de entrada{" "}
+              <span style={{ color: "#8995ad" }}>
+                ({filtradas.length})
+              </span>
             </h2>
           </div>
 
           <div className={styles.messageList}>
-            {filtradas.map((m) => (
+            {filtradas.map((mensagem) => (
               <button
-                key={m.id}
+                key={mensagem.id}
                 className={`${styles.messageItem} ${
-                  selected?.id === m.id ? styles.messageSelected : ""
+                  selected?.id === mensagem.id
+                    ? styles.messageSelected
+                    : ""
                 }`}
-                onClick={() => abrir(m)}
+                onClick={() => abrir(mensagem)}
               >
                 <div
                   style={{
@@ -150,25 +164,29 @@ export default function AdminMensagens() {
                     gap: 8,
                   }}
                 >
-                  <strong>{m.emissor}</strong>
+                  <strong>{mensagem.emissor}</strong>
+
                   <span
                     className={
-                      m.respostaAdmin
+                      mensagem.respostaAdmin
                         ? styles.badge
                         : styles.badgeUnread
                     }
                   >
-                    {m.respostaAdmin ? "Respondida" : "Nova"}
+                    {mensagem.respostaAdmin ? "Respondida" : "Nova"}
                   </span>
                 </div>
 
-                <p>{m.texto}</p>
+                <p>{mensagem.texto}</p>
 
                 <div className={styles.messageMeta}>
-                  <span>{m.email}</span>
+                  <span>{mensagem.email}</span>
+
                   <span>
-                    {m.dataMensagem
-                      ? new Date(m.dataMensagem).toLocaleDateString("pt-BR")
+                    {mensagem.dataMensagem
+                      ? new Date(
+                          mensagem.dataMensagem
+                        ).toLocaleDateString("pt-BR")
                       : ""}
                   </span>
                 </div>
@@ -215,7 +233,9 @@ export default function AdminMensagens() {
                     id="resposta"
                     className={styles.textarea}
                     value={resposta}
-                    onChange={(e) => setResposta(e.target.value)}
+                    onChange={(evento) =>
+                      setResposta(evento.target.value)
+                    }
                     placeholder="Escreva uma resposta clara e acolhedora..."
                     required
                   />
@@ -233,11 +253,16 @@ export default function AdminMensagens() {
                 >
                   {enviando
                     ? "Enviando..."
-                    : "Enviar resposta por e-mail"}
+                    : "↗ Enviar resposta por e-mail"}
                 </button>
 
-                {erro && <p className={styles.error}>{erro}</p>}
-                {ok && <p className={styles.success}>{ok}</p>}
+                {erro && (
+                  <p className={styles.error}>{erro}</p>
+                )}
+
+                {ok && (
+                  <p className={styles.success}>{ok}</p>
+                )}
               </form>
             </div>
           ) : (
