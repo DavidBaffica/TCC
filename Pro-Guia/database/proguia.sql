@@ -1,105 +1,113 @@
 
-/* =====================================================
-   PRO GUIA - GERENCIAMENTO DO BANCO DE DADOS
-   ===================================================== */
-
-
-/* 1. APAGAR O BANCO ANTIGO */
-
 USE master;
 GO
 
-IF DB_ID('proguia') IS NOT NULL
+IF DB_ID('proguia') IS NULL
 BEGIN
-    ALTER DATABASE proguia
-    SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-
-    DROP DATABASE proguia;
+    CREATE DATABASE proguia;
 END;
-GO
-
-
-/* 2. CRIAR O BANCO NOVAMENTE */
-
-CREATE DATABASE proguia;
 GO
 
 USE proguia;
 GO
 
-
-/* 3. VERIFICAR SE O BANCO EXISTE */
-
-SELECT name AS BancoCriado
-FROM sys.databases
-WHERE name = 'proguia';
+-- TABELA DE USUARIOS
+IF OBJECT_ID('dbo.Usuario', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Usuario
+    (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        nome VARCHAR(100) NOT NULL,
+        username VARCHAR(100) NOT NULL UNIQUE,
+        password VARCHAR(100) NOT NULL,
+        nivelAcesso VARCHAR(10) NULL,
+        telefone VARCHAR(20) NULL,
+        foto VARBINARY(MAX) NULL,
+        dataCadastro DATETIME2 NOT NULL,
+        dataAtualizacao DATETIME2 NULL,
+        statusUsuario VARCHAR(20) NOT NULL
+    );
+END;
 GO
 
-
-/* 4. VERIFICAR AS TABELAS */
-
-SELECT
-    TABLE_NAME AS NomeTabela
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_TYPE = 'BASE TABLE';
+-- TABELA DE MENSAGENS
+IF OBJECT_ID('dbo.Mensagem', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Mensagem
+    (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        dataMensagem DATETIME2 NULL,
+        emissor VARCHAR(100) NULL,
+        email VARCHAR(254) NULL,
+        telefone VARCHAR(20) NULL,
+        texto VARCHAR(400) NULL,
+        dataAtualizacao DATETIME2 NULL,
+        statusMensagem VARCHAR(20) NULL
+            CONSTRAINT DF_Mensagem_Status DEFAULT 'ATIVO',
+        respostaAdmin VARCHAR(4000) NULL,
+        dataResposta DATETIME2 NULL
+    );
+END;
 GO
 
-
-/* 5. CONSULTAR USUÁRIOS */
-
--- Execute depois de criar as tabelas
-SELECT *
-FROM Usuario;
+-- GARANTIR OS CAMPOS DE RESPOSTA
+IF COL_LENGTH('dbo.Mensagem', 'respostaAdmin') IS NULL
+BEGIN
+    ALTER TABLE dbo.Mensagem
+    ADD respostaAdmin VARCHAR(4000) NULL;
+END;
 GO
 
-
-/* 6. CONSULTAR MENSAGENS */
-
-SELECT *
-FROM Mensagem;
+IF COL_LENGTH('dbo.Mensagem', 'dataResposta') IS NULL
+BEGIN
+    ALTER TABLE dbo.Mensagem
+    ADD dataResposta DATETIME2 NULL;
+END;
 GO
 
-
-/* 7. CONSULTAR CURSOS */
-
-SELECT *
-FROM Curso;
+-- TABELA DE CURSOS
+IF OBJECT_ID('dbo.Curso', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Curso
+    (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        titulo VARCHAR(140) NOT NULL,
+        categoria VARCHAR(40) NOT NULL,
+        descricao VARCHAR(2000) NOT NULL,
+        imagemUrl VARCHAR(600) NULL,
+        cargaHoraria VARCHAR(60) NULL,
+        linkExterno VARCHAR(600) NULL,
+        ativo BIT NOT NULL DEFAULT 1,
+        dataCadastro DATETIME2 NOT NULL
+    );
+END;
 GO
 
+-- CONFERIR AS TABELAS CRIADAS
+SELECT name AS Tabela
+FROM sys.tables
+ORDER BY name;
 
-/* 8. PROMOVER UMA CONTA PARA ADMINISTRADOR */
 
--- TROQUE PELO E-MAIL DA SUA CONTA
+--ver cadastro
+USE proguia;
+GO
 
-UPDATE Usuario
+SELECT id, nome, username, nivelAcesso, statusUsuario
+FROM dbo.Usuario;
+
+
+--adm
+USE proguia;
+GO
+
+UPDATE dbo.Usuario
 SET nivelAcesso = 'ADMIN'
-WHERE email = 'SEU_EMAIL@gmail.com';
+WHERE username = 'SEU_EMAIL_AQUI';
 GO
 
+SELECT id, nome, username, nivelAcesso, statusUsuario
+FROM dbo.Usuario
+WHERE username = 'SEU_EMAIL_AQUI';
 
-/* 9. CONFERIR A CONTA ADMINISTRADORA */
-
-SELECT
-    nome,
-    email,
-    nivelAcesso
-FROM Usuario
-WHERE email = 'SEU_EMAIL@gmail.com';
-GO
-
-
-/* 10. CONTAR OS REGISTROS DAS TABELAS */
-
-SELECT 'Usuario' AS Tabela, COUNT(*) AS Total
-FROM Usuario
-
-UNION ALL
-
-SELECT 'Mensagem', COUNT(*)
-FROM Mensagem
-
-UNION ALL
-
-SELECT 'Curso', COUNT(*)
-FROM Curso;
-GO
+--ola 
